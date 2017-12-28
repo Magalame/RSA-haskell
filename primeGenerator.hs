@@ -2,7 +2,7 @@ import Data.Bits
 import Data.Char
 import System.Random
 
--- https://gist.github.com/trevordixon/6788535
+
 
 
 millerExps :: (Integral a) => [a] -> [a]
@@ -16,6 +16,8 @@ millerExps listnb = if (head listnb) `mod` 2 == 0
 millerExpsWrapper :: (Integral a) => a -> [a]
 millerExpsWrapper x = millerExps [x]
 
+
+---- https://gist.github.com/trevordixon/6788535
 modExp :: Integer -> Integer -> Integer -> Integer
 modExp b 0 m = 1
 modExp b e m = t * modExp ((b * b) `mod` m) (shiftR e 1) m `mod` m
@@ -30,28 +32,29 @@ millerTest a n (x:exps) = if (modExp a x n) == 1
                                                         then True
                                                         else millerHelper a n exps
 
-gen :: (Num a, Random a) => a -> a -> IO [a]
-gen up down = do sequence [randomRIO (down, up) | x <- [1..100]]
 
-gen2 :: (Integral a, Random a) => a -> a -> IO [a]
-gen2 up down = do sequence [randomRIO (down, up) | x <- [1..100]]
+genRandom :: (Integral a, Random a) => a -> a -> IO [a]
+genRandom up down = do sequence [randomRIO (down, up) | x <- [1..100]]
 
 genWrapper :: Integer -> Integer -> IO [Integer]
-genWrapper up down = gen2 up down
+genWrapper up down = genRandom up down
 
-genTest :: Integer -> IO String
-genTest n = getLine
-
-displayTest n = do 
-              rs <- genWrapper 1 10
-              print rs
-              if helperisPrime n (millerExpsWrapper (n-1)) rs
-              then do 
-                    putStrLn "Yes"
+isPrime :: Integer -> IO Bool
+isPrime n = do 
+              if n == 1
+              then do
+                  return False
               else do
-                    putStrLn "No"
+
+                  rs <- genWrapper 2 (n-1)
+              --print rs
+                  if helperisPrime n (millerExpsWrapper (n-1)) rs
+                  then do 
+                       return True
+                  else do
+                        return False
                     
-              putStrLn "Hey"
+              --putStrLn "Hey"
 
 helperisPrime :: Integer -> [Integer] -> [Integer] -> Bool
 helperisPrime _ _ [] = True
@@ -59,6 +62,24 @@ helperisPrime n exps (a:as) = if millerTest a n exps
                             then helperisPrime n exps as
                             else False
               
+--primeGen :: Integer -> IO Integer
+--primeGen :: (Integral a, Random a) => a -> IO a 
+primeGen down up = do 
+                   res <- randomRIO (down,up)
+                  -- print res
+                   if res `mod` 2 == 0
+                   then primeGen down up
+                   else helperprimeGen res
+                   where helperprimeGen x = do
+                                            resisprime <- isPrime x
+                                            if resisprime
+                                            then return x
+                                            else helperprimeGen $ x + 2
+
+
+--randomRIO (round ((2**0.5)*(2**(((fromIntegral nlen)/2)-1))+1), round(2**((fromIntegral nlen)/2))-1)
+                --print res
+                --return nb             
 
 --genWrapper :: (Num a) => a -> a -> [a]
 
