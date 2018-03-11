@@ -5,11 +5,13 @@ import System.Random
 millerExps :: (Integral a) => [a] -> [a]
 
 millerExps [x] = if x `mod`2 == 0
+
            then init $ millerExps [x `div` 2, x] -- if i don't put the x it gets stuck in the first parsing situation
            else [x]
 millerExps (x:xs) = if x `mod` 2 == 0
                     then millerExps $ (x `div` 2):(x:xs)
                     else (x:xs)
+
 
 millerExpsWrapper :: (Integral a) => a -> [a]
 millerExpsWrapper x = millerExps [x]
@@ -41,6 +43,7 @@ isPrime n = do
 
                   rs <- genWrapper 2 (n-1)
               --print rs
+
                   return $ helperisPrime n (millerExpsWrapper (n-1)) rs
 
 
@@ -49,6 +52,7 @@ isPrime n = do
 helperisPrime :: Integer -> [Integer] -> [Integer] -> Bool
 helperisPrime _ _ [] = True
 helperisPrime n exps (a:as) = if millerTest a n exps
+
                               then helperisPrime n exps as
                               else False
 
@@ -56,6 +60,7 @@ helperisPrime n exps (a:as) = if millerTest a n exps
 --primeGen :: (Integral a, Random a) => a -> IO a
 primeGen :: Integer -> Integer -> IO Integer
 primeGen down up = do
+
                    res <- randomRIO (down,up)
                   -- print res
                    if res `mod` 2 == 0
@@ -66,6 +71,7 @@ primeGen down up = do
                                             if resisprime
                                             then return x
                                             else helperprimeGen $ x + 2
+
 primeGen2 :: Integral t => t -> IO Integer
 primeGen2 nlen = do
                   res <- randomRIO (round ((2**0.5)*(2**(((fromIntegral nlen)/2)-1))+1), round(2**((fromIntegral nlen)/2))-1)
@@ -118,3 +124,4 @@ createKeys nlen = do
                                    if tmp `mod` 2 == 1
                                    then return tmp
                                    else helperE
+
