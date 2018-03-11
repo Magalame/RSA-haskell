@@ -53,8 +53,7 @@ isPrime n = do
                        return True
                   else do
                         return False
-                    
-              --putStrLn "Hey"
+                 
 
 helperisPrime :: Integer -> [Integer] -> [Integer] -> Bool
 helperisPrime _ _ [] = True
@@ -62,8 +61,7 @@ helperisPrime n exps (a:as) = if millerTest a n exps
                             then helperisPrime n exps as
                             else False
               
---primeGen :: Integer -> IO Integer
---primeGen :: (Integral a, Random a) => a -> IO a 
+primeGen :: Integer -> Integer -> IO Integer
 primeGen down up = do 
                    res <- randomRIO (down,up)
                   -- print res
@@ -75,21 +73,3 @@ primeGen down up = do
                                             if resisprime
                                             then return x
                                             else helperprimeGen $ x + 2
-
-
---randomRIO (round ((2**0.5)*(2**(((fromIntegral nlen)/2)-1))+1), round(2**((fromIntegral nlen)/2))-1)
-                --print res
-                --return nb             
-
---genWrapper :: (Num a) => a -> a -> [a]
-
---isPrime :: (Num a) => a -> Bool
---isPrime n = do
-  --          rand <- gen 1000 2000
-    --        putStrLn "hey"
-   --         helperisPrime n (millerExpsWrapper n) 100
-     --       where helperisPrime _ _ 0 = True
-       --           helperisPrime n exps count = if millerTest (rand !! (count -1)) n exps
-         --                                      then helperisPrime n exps (count-1)
-           --                                    else False
-                                                 
