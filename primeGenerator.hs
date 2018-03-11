@@ -7,7 +7,7 @@ import System.Random
 
 millerExps :: (Integral a) => [a] -> [a]
 millerExps [x] = if x `mod`2 == 0
-           then init $ millerExps [x `div` 2, x] -- if i don't put the , it gets stuck in the first parsing situation
+           then init $ millerExps [x `div` 2, x] -- if i don't put the ,x it gets stuck in the first parsing situation
            else [x]  
 millerExps listnb = if (head listnb) `mod` 2 == 0
                then millerExps $ ((head listnb) `div` 2):listnb
