@@ -36,7 +36,7 @@ genWrapper up down = do sequence [randomRIO (down, up) | x <- [1..100]]
 
 isPrime :: Integer -> IO Bool
 isPrime n = do
-              if n == 1
+              if (n == 1) || (n `mod` 2 == 0)
               then do
                   return False
               else do
@@ -125,3 +125,4 @@ createKeys nlen = do
                                    then return tmp
                                    else helperE
 
+main = createKeys 1024
