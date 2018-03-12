@@ -52,7 +52,7 @@ helperisPrime n exps (a:as) = if millerTest a n exps
 
 primeGen2 :: Integral t => t -> IO Integer -- generates random numbers until they are prime
 primeGen2 nlen = do
-                  res <- randomRIO (round ((2**0.5)*(2**(((fromIntegral nlen)/2)-1))+1), round(2**((fromIntegral nlen)/2))-1)
+                  res <- randomRIO (round ((1.4142135623730951)*(2^((nlen `div` 2)-1))+1), round(2^(nlen `div` 2))-1)
 
                   if res `mod` 2 == 0
                   then primeGen2 nlen
@@ -91,14 +91,14 @@ createKeys nlen = do
                                      tmpP <- primeGen2 nlen
                                      tmpQ <- primeGen2 nlen
                                      helpPQ tmpP tmpQ
-                        helpPQ p q = if fromIntegral (abs (p-q)) > (2**((fromIntegral nlen)/2-100))
+                        helpPQ p q = if (abs (p-q)) > (2^((nlen `div` 2)-100))
                                      then return (p,q)
                                      else do
                                           tmpP <- primeGen2 nlen
                                           tmpQ <- primeGen2 nlen
                                           helpPQ tmpP tmpQ
                         helperE  = do
-                                   tmp <- randomRIO(round (2**16+1), round (2**256-1))
+                                   tmp <- randomRIO(2^16+1,2^256-1)
                                    if tmp `mod` 2 == 1
                                    then return tmp
                                    else helperE
